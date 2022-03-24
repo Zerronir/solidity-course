@@ -36,7 +36,13 @@ contract ejemplo2 {
 
     mapping(uint256 => Viajes) viajes_fechas;
 
-    function setViaje(uint fecha, string memory dest, uint precio) public {
+    // Middleware equivalent
+    modifier checkDate(uint fecha) {
+        require(viajes_fechas[fecha].precio == 0, "hay viaje");
+        _; // Para indicar que se usa en la función
+    }
+
+    function setViaje(uint fecha, string memory dest, uint precio) checkDate(fecha) public {
         viajes_fechas[fecha] = Viajes(dest, precio);
     }
 
